@@ -1,6 +1,8 @@
 package io.zipcoder;
 
 
+import java.io.StringWriter;
+
 /**
  * @author tariq
  */
@@ -15,7 +17,21 @@ public class StringsAndThings {
      *           countYZ("day fyyyz"); // Should return 2
      */
     public Integer countYZ(String input){
-        return null;
+        String[] words = input.split("\\s+");
+        int count = 0;
+
+        for (String word: words) {
+            int length = word.length();
+            if(length > 0) {
+                char lastChar = word.charAt(length - 1);
+                if(Character.toLowerCase(lastChar) == 'y' || (Character.toLowerCase(lastChar) == 'z')) {
+                    if (length == 1 || !Character.isLetter(word.charAt(length - 2))) {
+                        count++;
+                    }
+                }
+            }
+        }
+        return count;
     }
 
     /**
@@ -28,7 +44,30 @@ public class StringsAndThings {
      *           removeString("Hello there", "x") // Should return "Hello there"
      */
     public String removeString(String base, String remove){
-        return null;
+        //Starting with StringBuilder to put the final result in
+        StringBuilder stringRemoved = new StringBuilder();
+
+        //index in the string
+        int index = 0;
+
+        //find the first occurence of remove in base
+        int firstIndex = base.toLowerCase().indexOf(remove.toLowerCase(), index);
+
+        while (firstIndex != -1) {
+            //append characters from index to firstIndex
+            stringRemoved.append(base, index, firstIndex);
+
+            //move index
+            index = firstIndex + remove.length();
+
+            //find next occurence of remove in base
+            firstIndex = base.toLowerCase().indexOf(remove.toLowerCase(), index);
+        }
+
+        stringRemoved.append(base.substring(index));
+
+        return stringRemoved.toString();
+
     }
 
     /**
@@ -39,9 +78,31 @@ public class StringsAndThings {
      *           containsEqualNumberOfIsAndNot("This is notnot") // Should return true
      *           containsEqualNumberOfIsAndNot("noisxxnotyynotxisi") // Should return true
      */
-    public Boolean containsEqualNumberOfIsAndNot(String input){
-        return null;
+    public Boolean containsEqualNumberOfIsAndNot(String input) {
+        // Initializing new variables for the count of "is" and "not" respectively
+        int count4Is = 0;
+        int count4Not = 0;
+
+        //Find those occurrences - initializing new variable
+        int indexIs = input.indexOf("is");
+        int indexNot = input.indexOf("not");
+
+        //While loop counting the number of "not" in string, (cant be negative number)
+        while (indexNot != -1) {
+            count4Not++;
+            indexNot = input.indexOf("not", indexNot + 1);
+        }
+        //While loop counting the number of "is" in string, (cant be negative number)
+        while (indexIs != -1) {
+            count4Is++;
+            indexIs = input.indexOf("is", indexIs + 1);
+        }
+
+        //grand finale, does the count for is = the count for not
+        return count4Is == count4Not;
+
     }
+
 
     /**
      * We'll say that a lowercase 'g' in a string is "happy" if there is another 'g' immediately to its left or right.
@@ -51,7 +112,23 @@ public class StringsAndThings {
      *           gHappy("xxggyygxx") // Should return  false
      */
     public Boolean gIsHappy(String input){
-        return null;
+        //need to make case not matter - convert to lowercase
+        input = input.toLowerCase();
+
+        //iterate through the input string
+        for (int i = 0; i < input.length(); i++) {
+            if (input.charAt(i) == 'g') {
+                //check is g is HAPPY~
+                boolean happy = false;
+                if ((i > 0 && input.charAt(i - 1) == 'g') || (i < input.length() - 1 && input.charAt(i + 1) == 'g')) {
+                    happy = true;
+                }
+                if (!happy) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
 
@@ -62,7 +139,20 @@ public class StringsAndThings {
      *            countTriple("xxxabyyyycd") // Should return 3
      *            countTriple("a") // Should return 0
      */
-    public Integer countTriple(String input){
-        return null;
+    public Integer countTriple(String input) {
+        //need to make case not matter - convert to lowercase
+        input = input.toLowerCase();
+
+        int triples = 0;
+
+        //iterate through the input string
+        for (int i = 0; i < input.length() - 3; i++) {
+            if (input.charAt(i) == input.charAt(i + 1) && input.charAt(i) == input.charAt(i + 2)) {
+                triples++;
+            }
+
+        }
+        return triples;
     }
 }
+
